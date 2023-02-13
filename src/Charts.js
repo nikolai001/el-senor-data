@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import './assets/scss/charts.scss';
 
 let currentDate = new Date()
 
@@ -34,6 +35,8 @@ function Charts() {
             setLoading(true)
             let data = await fetch(setApi());
             data = await data.json();
+            data.forEach(entry => entry.time_start = entry.time_start.substring(11,16))
+            data.forEach(entry => entry.DKK_per_kWh = entry.DKK_per_kWh.toString().substring(0,5))
             setApiData(data)
             setLoading(false);
         }
@@ -41,25 +44,36 @@ function Charts() {
   },[])
 
   return (
-
+    
     <table>
         <tr>
             <th>
                 From
             </th>
             <th>
-                Price
+                Rå pris
+            </th>
+            <th>
+                Pris med moms
             </th>
         </tr>
 
         {apiData.map((entry) => 
-            <tr>
+            <tr key={entry.time_start}>
                 <td>
+                    {(entry.time_start.substring(0,2) > '05' && entry.time_start.substring(0,2) < '18') ? <i class="material-symbols-outlined">light_mode</i> : <i class="material-symbols-outlined">dark_mode</i>}
+                    <i class="material-symbols-outlined"></i>
                     {entry.time_start}
                 </td>
 
                 <td>
-                    {entry.DKK_per_kWh + ' Kr'}
+                {(entry.DKK_per_kWh.includes('0.',0) ? <p>{(entry.DKK_per_kWh*100).toString().replace('.',',').concat(' Øre')}</p> : <p>{(entry.DKK_per_kWh).toString().replace('.',',').concat(' Kr')}</p>)}
+                  {/* {(entry.DKK_per_kWh).replace('.',',').concat(' Kr')} */}
+                </td>
+
+                <td>
+                    {/* {(entry.DKK_per_kWh * 1.25).toString().substring(0,5).replace('.',',').concat(' Kr')} */}
+                    {((entry.DKK_per_kWh * 1.25).toString().includes('0.',0) ? <p>{((entry.DKK_per_kWh * 1.25)*100).toString().replace('.',',').concat(' Øre')}</p> : <p>{(entry.DKK_per_kWh).toString().replace('.',',').concat(' Kr')}</p>)}
                 </td>
             </tr>
         )} 
