@@ -67,12 +67,11 @@ function Charts() {
                 </td>
 
                 <td>
-                {(entry.DKK_per_kWh.charAt(0) === '0' ? <p>{(entry.DKK_per_kWh*100).toString().replace('.',',').substring(0,4).concat(' Øre')}</p> : <p>{(entry.DKK_per_kWh).toString().replace('.',',').substring(0,4).concat(' Kr')}</p>)}
-                  {/* {(entry.DKK_per_kWh).replace('.',',').concat(' Kr')} */}
+                {(entry.DKK_per_kWh.charAt(0) === '0' ? <p>{(entry.DKK_per_kWh*100).toFixed(2).replace('.',',').concat(' Øre')}</p> : <p>{(entry.DKK_per_kWh*1).toFixed(2).replace('.',',').concat(' Kr')}</p>)}
                 </td>
 
                 <td>
-                    {((entry.DKK_per_kWh * 1.25).toString().charAt(0) === '0' ? <p>{((entry.DKK_per_kWh * 1.25)*100).toString().replace('.',',').substring(0,4).concat(' Øre')}</p> : <p>{(entry.DKK_per_kWh * 1.25).toString().replace('.',',').substring(0,4).concat(' Kr')}</p>)}
+                    {((entry.DKK_per_kWh * 1.25).toString().charAt(0) === '0' ? <p>{((entry.DKK_per_kWh * 1.25)*100).toFixed(2).replace('.',',').concat(' Øre')}</p> : <p>{(entry.DKK_per_kWh * 1.25).toFixed(2).replace('.',',').concat(' Kr')}</p>)}
                 </td>
             </tr>
         )} 
