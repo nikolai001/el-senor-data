@@ -1,15 +1,88 @@
-table {
+@import './colours','./elevations';
+  
+body {
+  background-color: $background--light;
+}
+
+.chart {
+  width: 100%;
+  background-color: $background;
+  display: flex;
+  flex-direction: column;
+  &__table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
+    .table__row {
+      background-color: $background;
+      color: white;
+
+      .row__column {
+        &--time {
+          
+          .column--time__text {
+            display: flex;
+            .column--time-time {
+              margin-right: auto;
+            }
+          }
+        }
+        .column--time__symbol {
+          user-select: none;
+          margin-left: auto;
+          margin-right: 5px;
+          transform: translateY(-2px);
+          &--dark {
+            color: $purple;
+          }
+          &--light {
+            color: $yellow;
+          }
+        }
+      }
+
+      .row__head {
+        color: $green;
+        padding: 0 0 15px 0;
+      }
+      &:nth-child(even) {
+        background-color: $background--light;
+      }
+    }
   }
-  
-  td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
+  &__date-picker {
+    width: 50%;
+    text-align: center;
+    max-width: 180px;
+    padding: 10px 10px;
+    outline: none;
+    color: $green;
+    background-color: $background--light;
+    border: none;
+    border-radius: 10px;
+    box-shadow: $el-1;
+    margin: 10px auto;
   }
-  
-  tr:nth-child(even) {
-    background-color: #dddddd;
+  &__region-label {
+    color: $green;
+    margin: 15px 0 0 0;
   }
+  &__date-label {
+    margin: 10px 0 0 0;
+    color: $green;
+  }
+  &__region {
+    width: 50%;
+    text-align: center;
+    max-width: 180px;
+    padding: 10px 10px;
+    outline: none;
+    color: $green;
+    background-color: $background--light;
+    border: none;
+    border-radius: 10px;
+    box-shadow: $el-1;
+    margin: 10px auto 30px auto;
+    box-sizing: content-box;
+  }
+}

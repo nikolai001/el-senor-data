@@ -43,39 +43,39 @@ function Charts() {
   }
 
   return (
-    <main>
-      <input type="date" min={"2022-10-27"} max={maxDate()} value={localDate.toISOString().split('T')[0]} onChange={(e) => setLocalDate(new Date(e.target.value))}></input>
-      <label htmlFor="Region">Vælg landsdel</label>
-      <select name="Region" onChange={({target:{value}}) => regionChange(value)}>
-        <option value="DK2">Østdanmark</option>
-        <option value="DK1">Vestdanmark</option>
+    <main className='chart'>
+      <label className='chart__date-label' htmlFor="Date">Vælg dato</label>
+      <input name="Date" className='chart__date-picker' type="date" min={"2022-10-27"} max={maxDate()} value={localDate.toISOString().split('T')[0]} onChange={(e) => setLocalDate(new Date(e.target.value))}></input>
+      <label className='chart__region-label' htmlFor="Region">Vælg landsdel</label>
+      <select className='chart__region' name="Region" onChange={({target:{value}}) => regionChange(value)}>
+        <option className='region__option' value="DK2">Østdanmark</option>
+        <option className='region__option' value="DK1">Vestdanmark</option>
       </select>
-      <table>
-          <tr>
-              <th>
+      <table className='chart__table'>
+          <tr className='table__row'>
+              <th className='row__head'>
                   From
               </th>
-              <th>
+              <th className='row__head'>
                   Rå pris
               </th>
-              <th>
+              <th className='row__head'>
                   Pris med moms
               </th>
           </tr>
 
           {apiData.map((entry) => 
-              <tr key={entry.time_start}>
-                  <td>
-                      {(entry.time_start.substring(0,2) > '05' && entry.time_start.substring(0,2) < '18') ? <i className="material-symbols-outlined">light_mode</i> : <i className="material-symbols-outlined">dark_mode</i>}
-                      <i className="material-symbols-outlined"></i>
-                      {entry.time_start}
+              <tr className='table__row' key={entry.time_start}>
+                  <td className='row__column row__column--time'>
+                      <p className='column--time__text'>{(entry.time_start.substring(0,2) > '05' && entry.time_start.substring(0,2) < '18') ? <i className="material-symbols-outlined column--time__symbol column--time__symbol--light">light_mode</i> : <i className="material-symbols-outlined column--time__symbol column--time__symbol--dark">dark_mode</i>}
+                     <span className='column--time-time'>{entry.time_start}</span></p>
                   </td>
 
-                  <td>
+                  <td className='row__column'>
                   {(entry.DKK_per_kWh.charAt(0) === '0' ? <p>{(entry.DKK_per_kWh*100).toFixed(2).replace('.',',').concat(' Øre')}</p> : <p>{(entry.DKK_per_kWh*1).toFixed(2).replace('.',',').concat(' Kr')}</p>)}
                   </td>
 
-                  <td>
+                  <td className='row__column'>
                       {((entry.DKK_per_kWh * 1.25).toString().charAt(0) === '0' ? <p>{((entry.DKK_per_kWh * 1.25)*100).toFixed(2).replace('.',',').concat(' Øre')}</p> : <p>{(entry.DKK_per_kWh * 1.25).toFixed(2).replace('.',',').concat(' Kr')}</p>)}
                   </td>
               </tr>
