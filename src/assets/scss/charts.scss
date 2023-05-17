@@ -13,10 +13,14 @@ body {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
     .table__row {
       background-color: $background;
       color: white;
-
+      grid-column: 1/-1;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
       .row__column {
         &--time {
           
@@ -24,6 +28,7 @@ body {
             display: flex;
             .column--time-time {
               margin-right: auto;
+              transform: translateY(2px);
             }
           }
         }
@@ -31,7 +36,6 @@ body {
           user-select: none;
           margin-left: auto;
           margin-right: 5px;
-          transform: translateY(-2px);
           &--dark {
             color: $purple;
           }
@@ -50,7 +54,17 @@ body {
       }
     }
   }
-  &__date-picker {
+  .chart__region {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chart__date {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .date__picker {
     width: 50%;
     text-align: center;
     max-width: 180px;
@@ -63,15 +77,18 @@ body {
     box-shadow: $el-1;
     margin: 10px auto;
   }
-  &__region-label {
-    color: $green;
-    margin: 15px 0 0 0;
-  }
-  &__date-label {
+
+  .date__label {
     margin: 10px 0 0 0;
     color: $green;
   }
-  &__region {
+
+  .region__label {
+    color: $green;
+    margin: 15px 0 0 0;
+  }
+
+  .region__picker {
     width: 50%;
     text-align: center;
     max-width: 180px;
@@ -84,5 +101,77 @@ body {
     box-shadow: $el-1;
     margin: 10px auto 30px auto;
     box-sizing: content-box;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .chart {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    &__table {
+      grid-column: 1/-1;
+    }
+    .date__picker {
+      width: 100%;
+      max-width: 180px;
+      padding: 10px 10px;
+      margin: 10px auto 50px auto;
+    }
+    .region__label {
+      color: $green;
+      margin: 10px 0 0 0;
+    }
+    .date__label {
+      margin: 10px 0 0 0;
+      color: $green;
+    }
+
+    .region__picker {
+      width: 100%;
+      max-width: 180px;
+      padding: 10px 10px;
+      margin: 10px auto 50px auto;
+    }
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .chart {
+    .date__picker {
+      width: 100%;
+      max-width: 180px;
+      margin: 0;
+    }
+    .region__label {
+      color: $green;
+      margin: 0;
+      height: fit-content;
+      align-self: center;
+    }
+    .date__label {
+      margin: 0;
+      color: $green;
+      height: fit-content;
+      align-self: center;
+    }
+    .chart__region {
+      flex-direction: row;
+      justify-content: space-evenly;
+      margin: 25px auto;
+      max-width: 400px;
+      width: 70%;
+    }
+
+    .chart__date {
+      flex-direction: row;
+      justify-content: space-evenly;
+      margin: 25px auto;
+      width: 70%;
+      max-width: 400px;
+    }
+
+    .region__picker {
+      margin: 0;
+    }
   }
 }
