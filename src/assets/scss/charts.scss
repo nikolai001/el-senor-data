@@ -4,6 +4,21 @@ body {
   background-color: $background--light;
 }
 
+.input {
+  width: 50%;
+  text-align: center;
+  max-width: 180px;
+  padding: 10px 10px;
+  outline: none;
+  color: $green;
+  background-color: $background--light;
+  border: none;
+  border-radius: 10px;
+  box-shadow: $el-1;
+  margin: 10px auto 30px auto;
+  box-sizing: content-box;
+}
+
 .chart {
   width: 100%;
   background-color: $background;
@@ -64,20 +79,6 @@ body {
     flex-direction: column;
   }
 
-  .date__picker {
-    width: 50%;
-    text-align: center;
-    max-width: 180px;
-    padding: 10px 10px;
-    outline: none;
-    color: $green;
-    background-color: $background--light;
-    border: none;
-    border-radius: 10px;
-    box-shadow: $el-1;
-    margin: 10px auto;
-  }
-
   .date__label {
     margin: 10px 0 0 0;
     color: $green;
@@ -86,21 +87,6 @@ body {
   .region__label {
     color: $green;
     margin: 15px 0 0 0;
-  }
-
-  .region__picker {
-    width: 50%;
-    text-align: center;
-    max-width: 180px;
-    padding: 10px 10px;
-    outline: none;
-    color: $green;
-    background-color: $background--light;
-    border: none;
-    border-radius: 10px;
-    box-shadow: $el-1;
-    margin: 10px auto 30px auto;
-    box-sizing: content-box;
   }
 }
 

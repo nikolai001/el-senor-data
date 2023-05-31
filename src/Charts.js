@@ -16,6 +16,7 @@ function Charts() {
   const [apiData, setApiData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [region, setRegion] = useState('DK2');
+  const [tarifs, setTarifs] = useState([]);
   const [localDate, setLocalDate] = useState(() => new Date());
     useEffect (() => {
         async function fetchData() {
@@ -42,20 +43,58 @@ function Charts() {
     setRegion(value)
   }
 
+  const updateTarif = (value, identifier) => {
+    if (tarifs.length !== 0) {
+      let updatedTarifs = tarifs.map((element) => {
+        if (element.identifier === identifier) {
+          return { ...element, value: value };
+        }
+        return element;
+      });
+  
+      let existingElement = updatedTarifs.find(
+        (element) => element.identifier === identifier
+      );
+  
+      if (!existingElement) {
+        updatedTarifs.push({ identifier: identifier, value: value });
+      }
+
+      setTarifs(updatedTarifs);
+    } else {
+      setTarifs([{ identifier, value }]);
+    }
+  };
+  
+  
+
   return (
     <main className='chart'>
       
       <div className='chart__date'>
         <label className='date__label' htmlFor="Date">Vælg dato</label>
-        <input name="Date" className='date__picker' type="date" min={"2022-10-27"} max={maxDate()} value={localDate.toISOString().split('T')[0]} onChange={(e) => setLocalDate(new Date(e.target.value))}></input>
+        <input name="Date" className='date__input input' type="date" min={"2022-10-27"} max={maxDate()} value={localDate.toISOString().split('T')[0]} onChange={(e) => setLocalDate(new Date(e.target.value))}></input>
       </div>
       
+      {tarifs.map((element) => 
+        <div key={element.identifier}>{element.value + ' ' + element.identifier}</div>
+      )}
+
       <div className='chart__region'>
         <label className='region__label' htmlFor="Region">Vælg landsdel</label>
-        <select className='region__picker' name="Region" onChange={({target:{value}}) => regionChange(value)}>
+        <select className='region__picker input' name="Region" onChange={({target:{value}}) => regionChange(value)}>
           <option className='picker__option' value="DK2">Østdanmark</option>
           <option className='picker__option' value="DK1">Vestdanmark</option>
         </select>
+
+        <label className='region__label' htmlFor='Tarrif-early'>Tarrif mellem 07:00 og 12:00</label>
+        <input className='region__tarrif input' type='number' name="Tarrif-early" defaultValue='0' step='0.1' onChange={({target:{value}}) => updateTarif(value, 'Tarrif-early')}></input>
+
+        <label className='region__label' htmlFor='Tarrif-middle'>Tarrif mellem 12:00 og 17:00</label>
+        <input className='region__tarrif input' type='number' name="Tarrif-middle" defaultValue='0' step='0.1' onChange={({target:{value}}) => updateTarif(value, 'Tarrif-mid')}></input>
+
+        <label className='region__label' htmlFor='Tarrif-late'>Tarrif mellem 17:00 og 24:00</label>
+        <input className='region__tarrif input' type='number' name="Tarrif-late" defaultValue='0' step='0.1' onChange={({target:{value}}) => updateTarif(value, 'Tarrif-late')}></input>
       </div>
 
       <article className='chart__table'>
@@ -67,7 +106,7 @@ function Charts() {
                   Rå pris
               </div>
               <div className='row__head'>
-                  Pris med moms
+                  Pris med moms og tarrif
               </div>
           </div>
 
