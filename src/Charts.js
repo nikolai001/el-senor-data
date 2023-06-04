@@ -18,6 +18,16 @@ function Charts() {
   const [region, setRegion] = useState('DK2');
   const [tarifs, setTarifs] = useState([]);
   const [localDate, setLocalDate] = useState(() => new Date());
+  const [currentTarif, setCurrentTarif] = useState('')
+  const [correctedNumber, setCorrectedNumber] = useState('')
+  const [hours, setHours] = useState(() => {
+    const initialHours = [];
+    for (let i = 0; i < 25; i++) {
+      const hour = String(i).padStart(2, '0') + ':00';
+      initialHours.push(hour);
+    }
+    return initialHours;
+  });
     useEffect (() => {
         async function fetchData() {
             setLoading(true)
@@ -41,6 +51,59 @@ function Charts() {
 
   const regionChange = (value) => {
     setRegion(value)
+  }
+
+  function createTarif () {
+    if (tarifs.length !== 0) {
+      if (!currentTarif) {
+        let lastId = tarifs[tarifs.length - 1].identifier
+        let updatedTarifs = tarifs.map((element)=> element)
+        updatedTarifs.push({identifier:lastId +1})
+        setTarifs(updatedTarifs)
+        setCurrentTarif(updatedTarifs[updatedTarifs.length - 1])
+        return
+      }
+      alert("Udfyld resterende felter eller slet nuværende tarif")
+    }
+    setTarifs([{identifier:0}])
+    setCurrentTarif({identifier:0})
+  }
+
+  function closeTarif (tarif) {
+    if (tarif.submitted) {
+      setCurrentTarif()
+      setCorrectedNumber()
+      return
+    }
+    setCurrentTarif()
+    setCorrectedNumber()
+    let updatedTarifs = tarifs.filter((element) => element.identifier !== tarif.identifier);
+    setTarifs(updatedTarifs)
+  }
+
+  function submitTarif (tarif) {
+    if (tarif.price && tarif.time_range) {
+      const updatedTarifs = tarifs.map((element) => {
+        if (element.identifier === tarif.identifier) {
+          return { ...element, submitted: true };
+        }
+        return element;
+      });
+      setTarifs(updatedTarifs);
+    }
+  }
+
+  function priceChange (value) {
+    
+    let correctedValue = value.replace(/,/g, ".");
+
+    if (!isNaN(correctedValue)) {
+      setCorrectedNumber(correctedValue)
+    }
+  }
+
+  function selectRange (hour) {
+    
   }
 
   const updateTarif = (value, identifier) => {
@@ -75,10 +138,6 @@ function Charts() {
         <label className='date__label' htmlFor="Date">Vælg dato</label>
         <input name="Date" className='date__input input' type="date" min={"2022-10-27"} max={maxDate()} value={localDate.toISOString().split('T')[0]} onChange={(e) => setLocalDate(new Date(e.target.value))}></input>
       </div>
-      
-      {tarifs.map((element) => 
-        <div key={element.identifier}>{element.value + ' ' + element.identifier}</div>
-      )}
 
       <div className='chart__region'>
         <label className='region__label' htmlFor="Region">Vælg landsdel</label>
@@ -87,14 +146,32 @@ function Charts() {
           <option className='picker__option' value="DK1">Vestdanmark</option>
         </select>
 
-        <label className='region__label' htmlFor='Tarrif-early'>Tarrif mellem 07:00 og 12:00</label>
-        <input className='region__tarrif input' type='number' name="Tarrif-early" defaultValue='0' step='0.1' onChange={({target:{value}}) => updateTarif(value, 'Tarrif-early')}></input>
+        {/* <label className='region__label' htmlFor='Tarrif-early'>Tarrif mellem 07:00 og 12:00</label>
+        <input className='region__tarrif input' type='number' name="Tarrif-early" defaultValue='0' min='0' step='0.1' onChange={({target:{value}}) => updateTarif(value, 'Tarrif-early')}></input>
 
         <label className='region__label' htmlFor='Tarrif-middle'>Tarrif mellem 12:00 og 17:00</label>
-        <input className='region__tarrif input' type='number' name="Tarrif-middle" defaultValue='0' step='0.1' onChange={({target:{value}}) => updateTarif(value, 'Tarrif-mid')}></input>
+        <input className='region__tarrif input' type='number' name="Tarrif-middle" defaultValue='0' min='0' step='0.1' onChange={({target:{value}}) => updateTarif(value, 'Tarrif-mid')}></input>
 
         <label className='region__label' htmlFor='Tarrif-late'>Tarrif mellem 17:00 og 24:00</label>
-        <input className='region__tarrif input' type='number' name="Tarrif-late" defaultValue='0' step='0.1' onChange={({target:{value}}) => updateTarif(value, 'Tarrif-late')}></input>
+        <input className='region__tarrif input' type='number' name="Tarrif-late" defaultValue='0' min='0' step='0.1' onChange={({target:{value}}) => updateTarif(value, 'Tarrif-late')}></input> */}
+        
+        {tarifs.map((tarif) => 
+          <div className='region__card' key={tarif.identifier}>
+            <button className='card__button card__button--close material-symbols-outlined' onClick={() => closeTarif(tarif)}>close</button>
+            <p className='card__title'>Ukategoriseret tarif</p>
+            <input className='card__price' type="text" placeholder='Pris i kr/øre' onChange={({target:{value}}) => priceChange(value)} value={correctedNumber}></input>
+            <button className='card__time'>Vælg tidspunkt</button>
+            <button className='card__button card__button--submit material-symbols-outlined' onClick={() => submitTarif(tarif)}>check</button>
+          </div>
+        )}
+
+        {/* <div className='region__hours'>
+          {hours.map((freeHour) =>
+            <button className='hours__option' key={freeHour} onClick={() => selectRange(freeHour)}>{freeHour}</button>
+          )}
+        </div> */}
+
+        <button className='region__text-button' type='button' onClick={() => createTarif()}>Tilføj tarrif</button> 
       </div>
 
       <article className='chart__table'>

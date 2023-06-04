@@ -88,6 +88,75 @@ body {
     color: $green;
     margin: 15px 0 0 0;
   }
+
+  .region__text-button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: $green;
+    text-decoration: underline;
+    margin: 0 10% 0 auto;
+    width: fit-content;
+    cursor: pointer;
+  }
+
+  .region__hours {
+    width: 70%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    justify-content: center;
+    background-color: $background--light;
+    box-shadow: $el-1;
+    border-radius: 10px;
+    padding: 15px 2%;
+    .hours__option {
+      background-color: $white;
+      border: none;
+      width: 30%;
+      max-width: 50px;
+      &--selected { 
+        background-color: $purple;
+      }
+      &:hover {
+        background-color: $green--light;
+      }
+    }
+  }
+
+  .region__card {
+    background-color: $background--light;
+    box-shadow: $el-1;
+    border-radius: 10px;
+    width: 60%;
+    margin: 15px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .card__price {
+      width: 30%;
+      outline: none;
+    }
+    .card__button {
+      background-color: transparent;
+      outline: none;
+      border: none;
+      color: $green;
+      padding: 0;
+      display: block;
+      cursor: pointer;
+      &--close {
+        margin: 5px 5px 0 auto;
+      }
+      &--submit {
+        margin: 0 5px 5px auto;
+      }
+    }
+    .card__title {
+      color: $green;
+      margin: 5px 0;
+    }
+  }
 }
 
 @media screen and (min-width: 600px) {
