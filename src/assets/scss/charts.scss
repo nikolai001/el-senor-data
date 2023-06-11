@@ -81,11 +81,11 @@ body {
 
   .date__label {
     margin: 10px 0 0 0;
-    color: $green;
+    color: $white;
   }
 
   .region__label {
-    color: $green;
+    color: $white;
     margin: 15px 0 0 0;
   }
 
@@ -133,9 +133,16 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    &--closed {
+      padding: 24px 0 0 0;
+    }
     .card__price {
       width: 30%;
       outline: none;
+      &--alt {
+        color: $white;
+        word-break: break-word;
+      }
     }
     .card__button {
       background-color: transparent;
@@ -153,8 +160,9 @@ body {
       }
     }
     .card__title {
-      color: $green;
+      color: $white;
       margin: 5px 0;
+      word-break: break-word;
     }
   }
 }

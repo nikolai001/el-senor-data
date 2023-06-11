@@ -14,6 +14,7 @@ function setApi(region, localDate) {
 
 function Charts() {
   const [apiData, setApiData] = useState([]);
+  const [VATPrices, setVAT] = useState([]);
   const [loading, setLoading] = useState(false);
   const [region, setRegion] = useState('DK2');
   const [tarifs, setTarifs] = useState([]);
@@ -28,18 +29,23 @@ function Charts() {
     }
     return initialHours;
   });
-    useEffect (() => {
-        async function fetchData() {
-            setLoading(true)
-            let data = await fetch(setApi(region,localDate));
-            data = await data.json();
-            data.forEach(entry => entry.time_start = entry.time_start.substring(11,16))
-            data.forEach(entry => entry.DKK_per_kWh = entry.DKK_per_kWh.toString().substring(0,5))
-            setApiData(data)
-            setLoading(false);
-        }
-        fetchData()
-  },[region,localDate])
+  useEffect (() => {
+    async function fetchData() {
+        setLoading(true)
+        let data = await fetch(setApi(region,localDate));
+        data = await data.json();
+        data.forEach(entry => entry.time_start = entry.time_start.substring(11,16))
+        data.forEach(entry => entry.DKK_per_kWh = entry.DKK_per_kWh.toString().substring(0,5))
+        setApiData(data)
+        const updatedData = data.map(item => ({ ...item }));
+        updatedData.forEach(price => price.DKK_per_kWh = price.DKK_per_kWh * 1.25);
+        setVAT(updatedData);          
+        setLoading(false);
+      }
+      fetchData()
+},[region,localDate, tarifs])
+
+
   
   function prependLeadingZero(value) {
     return value.toString().length === 1 ? '0' + value : value;
@@ -63,7 +69,6 @@ function Charts() {
         setCurrentTarif(updatedTarifs[updatedTarifs.length - 1])
         return
       }
-      alert("Udfyld resterende felter eller slet nuværende tarif")
     }
     setTarifs([{identifier:0}])
     setCurrentTarif({identifier:0})
@@ -82,27 +87,25 @@ function Charts() {
   }
 
   function submitTarif () {
-    setTarifs(prevTarifs => {
-      const updatedTarifs = prevTarifs.map(tarif => {
-        if (tarif.identifier === currentTarif.identifier) {
-          return { ...tarif, price: correctedNumber };
-        }
-        return tarif;
+    if (correctedNumber && correctedNumber.length > 0) {
+      setTarifs(prevTarifs => {
+        const updatedTarifs = prevTarifs.map(tarif => {
+          if (tarif.identifier === currentTarif.identifier) {
+            return { ...tarif, price: correctedNumber };
+          }
+          return tarif;
+        });
+        const filteredTarifs = updatedTarifs.filter(tarif => tarif.identifier !== setCurrentTarif.setCurrentTarif || tarif === currentTarif);
+        return filteredTarifs;
       });
-      const filteredTarifs = updatedTarifs.filter(tarif => tarif.identifier !== setCurrentTarif.setCurrentTarif || tarif === currentTarif);
-      return filteredTarifs;
-    });
-    setCorrectedNumber()
-    setCurrentTarif()
-    // if (tarif.price && tarif.time_range) {
-    //   const updatedTarifs = tarifs.map((element) => {
-    //     if (element.identifier === tarif.identifier) {
-    //       return { ...element, submitted: true };
-    //     }
-    //     return element;
-    //   });
-    //   setTarifs(updatedTarifs);
-    // }
+      setCorrectedNumber()
+      setCurrentTarif()
+    }
+  }
+
+  function deleteTarif (tarif) {
+    let updatedTarifs = tarifs.filter((element) => element.identifier !== tarif.identifier);
+    setTarifs(updatedTarifs)
   }
 
   function priceChange (value) {
@@ -168,13 +171,12 @@ function Charts() {
         <input className='region__tarrif input' type='number' name="Tarrif-late" defaultValue='0' min='0' step='0.1' onChange={({target:{value}}) => updateTarif(value, 'Tarrif-late')}></input> */}
         
         {tarifs.map((tarif) => 
-          <div className='region__card' key={tarif.identifier}>
-            <button className='card__button card__button--close material-symbols-outlined' onClick={() => closeTarif(tarif)}>close</button>
-            <p className='card__title'>Ukategoriseret tarif</p>
-            {currentTarif && currentTarif.identifier === tarif.identifier ? (<input className='card__price' type="text" placeholder='Pris i kr/øre' onChange={({ target: { value } }) => priceChange(value)} value={correctedNumber} /> ) : ( <p>{tarif.price}</p>)}
-
-            <button className='card__time'>Vælg tidspunkt</button>
-            <button className='card__button card__button--submit material-symbols-outlined' onClick={() => submitTarif(tarif)}>check</button>
+          <div className={currentTarif && currentTarif.identifier === tarif.identifier ? 'region__card' : 'region__card region__card--closed'} key={tarif.identifier}>
+            {currentTarif && currentTarif.identifier === tarif.identifier && (<button className='card__button card__button--close material-symbols-outlined' onClick={() => closeTarif(tarif)}>close</button>)}
+            { tarif.price ? ( <p className='card__title'>Tarrif på {tarif.price} kr</p> ) : (<p className='card__title'>Ukategoriseret tarif</p>)}
+            {currentTarif && currentTarif.identifier === tarif.identifier && (<input className='card__price' type="text" placeholder='Pris i kr/øre' onChange={({ target: { value } }) => priceChange(value)} value={correctedNumber} /> )}
+            {currentTarif && currentTarif.identifier === tarif.identifier && (<button className='card__time'>Vælg tidspunkt</button>)}
+            {currentTarif && currentTarif.identifier === tarif.identifier ? (<button className='card__button card__button--submit material-symbols-outlined' onClick={() => submitTarif(tarif)}>check</button>) : ( <button className='card__button card__button--submit material-symbols-outlined' onClick={() => deleteTarif(tarif)}>delete</button> )}
           </div>
         )}
 
@@ -184,7 +186,7 @@ function Charts() {
           )}
         </div> */}
 
-        <button className='region__text-button' type='button' onClick={() => createTarif()}>Tilføj tarrif</button> 
+        { !currentTarif && <button className='region__text-button' type='button' onClick={() => createTarif()}>Tilføj tarrif</button> }
       </div>
 
       <article className='chart__table'>
@@ -200,22 +202,40 @@ function Charts() {
               </div>
           </div>
 
-          {apiData.map((entry) => 
-              <div className='table__row' key={entry.time_start}>
-                  <div className='row__column row__column--time'>
-                      <p className='column--time__text'>{(entry.time_start.substring(0,2) > '05' && entry.time_start.substring(0,2) < '18') ? <i className="material-symbols-outlined column--time__symbol column--time__symbol--light">light_mode</i> : <i className="material-symbols-outlined column--time__symbol column--time__symbol--dark">dark_mode</i>}
-                     <span className='column--time-time'>{entry.time_start}</span></p>
-                  </div>
-
-                  <div className='row__column'>
-                  {(entry.DKK_per_kWh.charAt(0) === '0' ? <p>{(entry.DKK_per_kWh*100).toFixed(2).replace('.',',').concat(' Øre')}</p> : <p>{(entry.DKK_per_kWh*1).toFixed(2).replace('.',',').concat(' Kr')}</p>)}
-                  </div>
-
-                  <div className='row__column'>
-                      {((entry.DKK_per_kWh * 1.25).toString().charAt(0) === '0' ? <p>{((entry.DKK_per_kWh * 1.25)*100).toFixed(2).replace('.',',').concat(' Øre')}</p> : <p>{(entry.DKK_per_kWh * 1.25).toFixed(2).replace('.',',').concat(' Kr')}</p>)}
-                  </div>
+          {apiData.map((entry, index) => 
+            <div className='table__row' key={entry.time_start}>
+              <div className='row__column row__column--time'>
+                <p className='column--time__text'>
+                  {entry.time_start.substring(0, 2) > '05' && entry.time_start.substring(0, 2) < '18' ? (
+                    <i className="material-symbols-outlined column--time__symbol column--time__symbol--light">light_mode</i>
+                  ) : (
+                    <i className="material-symbols-outlined column--time__symbol column--time__symbol--dark">dark_mode</i>
+                  )}
+                  <span className='column--time-time'>{entry.time_start}</span>
+                </p>
               </div>
-          )} 
+
+              <div className='row__column'>
+                {entry.DKK_per_kWh.charAt(0) === '0' ? (
+                  <p>{(entry.DKK_per_kWh * 100).toFixed(2).replace('.', ',').concat(' Øre')}</p>
+                ) : (
+                  <p>{(entry.DKK_per_kWh * 1).toFixed(2).replace('.', ',').concat(' Kr')}</p>
+                )}
+              </div>
+
+              <div className='row__column'>
+                {VATPrices[index] && (
+                  <p>
+                    {VATPrices[index].DKK_per_kWh.toString().charAt(0) === '0' ? (
+                      <>{(VATPrices[index].DKK_per_kWh * 100).toFixed(2).replace('.', ',').concat(' Øre')}</>
+                    ) : (
+                      <>{(VATPrices[index].DKK_per_kWh).toFixed(2).replace('.', ',').concat(' Kr')}</>
+                    )}
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
       </article>
     </main>
   );
