@@ -20,6 +20,8 @@ function Charts() {
   const [tarifs, setTarifs] = useState([]);
   const [localDate, setLocalDate] = useState(() => new Date());
   const [currentTarif, setCurrentTarif] = useState('')
+  const [modalStatus, toggleModal] = useState(false)
+  const [currentHours, setCurrentHours] = useState([])
   const [correctedNumber, setCorrectedNumber] = useState('')
   const [hours, setHours] = useState(() => {
     const initialHours = [];
@@ -60,6 +62,7 @@ function Charts() {
   }
 
   function createTarif () {
+    setCurrentHours([])
     if (tarifs.length !== 0) {
       if (!currentTarif) {
         let lastId = tarifs[tarifs.length - 1].identifier
@@ -75,18 +78,22 @@ function Charts() {
   }
 
   function closeTarif (tarif) {
+    setCurrentHours([])
     if (tarif.submitted) {
       setCurrentTarif()
       setCorrectedNumber()
+      toggleModal(false)
       return
     }
     setCurrentTarif()
     setCorrectedNumber()
+    toggleModal(false)
     let updatedTarifs = tarifs.filter((element) => element.identifier !== tarif.identifier);
     setTarifs(updatedTarifs)
   }
 
   function submitTarif () {
+    toggleModal(false)
     if (correctedNumber && correctedNumber.length > 0) {
       setTarifs(prevTarifs => {
         const updatedTarifs = prevTarifs.map(tarif => {
@@ -118,7 +125,13 @@ function Charts() {
   }
 
   function selectRange (hour) {
-    
+    if (currentHours[0]) {
+      console.log(hour)
+      setCurrentHours(Array(currentHours[0], hour))
+    }else {
+      console.log(hour)
+      setCurrentHours(Array(hour))
+    }
   }
 
   const updateTarif = (value, identifier) => {
@@ -161,30 +174,33 @@ function Charts() {
           <option className='picker__option' value="DK1">Vestdanmark</option>
         </select>
 
-        {/* <label className='region__label' htmlFor='Tarrif-early'>Tarrif mellem 07:00 og 12:00</label>
-        <input className='region__tarrif input' type='number' name="Tarrif-early" defaultValue='0' min='0' step='0.1' onChange={({target:{value}}) => updateTarif(value, 'Tarrif-early')}></input>
-
-        <label className='region__label' htmlFor='Tarrif-middle'>Tarrif mellem 12:00 og 17:00</label>
-        <input className='region__tarrif input' type='number' name="Tarrif-middle" defaultValue='0' min='0' step='0.1' onChange={({target:{value}}) => updateTarif(value, 'Tarrif-mid')}></input>
-
-        <label className='region__label' htmlFor='Tarrif-late'>Tarrif mellem 17:00 og 24:00</label>
-        <input className='region__tarrif input' type='number' name="Tarrif-late" defaultValue='0' min='0' step='0.1' onChange={({target:{value}}) => updateTarif(value, 'Tarrif-late')}></input> */}
-        
-        {tarifs.map((tarif) => 
-          <div className={currentTarif && currentTarif.identifier === tarif.identifier ? 'region__card' : 'region__card region__card--closed'} key={tarif.identifier}>
-            {currentTarif && currentTarif.identifier === tarif.identifier && (<button className='card__button card__button--close material-symbols-outlined' onClick={() => closeTarif(tarif)}>close</button>)}
-            { tarif.price ? ( <p className='card__title'>Tarrif på {tarif.price} kr</p> ) : (<p className='card__title'>Ukategoriseret tarif</p>)}
-            {currentTarif && currentTarif.identifier === tarif.identifier && (<input className='card__price' type="text" placeholder='Pris i kr/øre' onChange={({ target: { value } }) => priceChange(value)} value={correctedNumber} /> )}
-            {currentTarif && currentTarif.identifier === tarif.identifier && (<button className='card__time'>Vælg tidspunkt</button>)}
-            {currentTarif && currentTarif.identifier === tarif.identifier ? (<button className='card__button card__button--submit material-symbols-outlined' onClick={() => submitTarif(tarif)}>check</button>) : ( <button className='card__button card__button--submit material-symbols-outlined' onClick={() => deleteTarif(tarif)}>delete</button> )}
-          </div>
+{tarifs.map((tarif) => (
+  <div className={currentTarif && currentTarif.identifier === tarif.identifier ? 'region__card' : 'region__card region__card--closed'} key={tarif.identifier}>
+    {currentTarif && currentTarif.identifier === tarif.identifier && (<button className='card__button card__button--close material-symbols-outlined' onClick={() => closeTarif(tarif)}>close</button>)}
+    { tarif.price ? ( <p className='card__title'>Tarrif på {tarif.price} kr</p> ) : (<p className='card__title'>Ukategoriseret tarif</p>)}
+    {currentTarif && currentTarif.identifier === tarif.identifier && (<input className='card__price' type="text" placeholder='Pris i kr/øre' onChange={({ target: { value } }) => priceChange(value)} value={correctedNumber} /> )}
+    {currentTarif && currentTarif.identifier === tarif.identifier && (
+      <div>
+        {currentHours[0] && currentHours[1] ? (
+          <button className="card__time" onClick={() => toggleModal(!modalStatus)}>
+            {currentHours[0]} - {currentHours[1]}
+          </button>
+        ) : (
+          <button className="card__time" onClick={() => toggleModal(!modalStatus)}>
+            Vælg tidspunkt
+          </button>
         )}
+      </div>
+    )}
+    {currentTarif && currentTarif.identifier === tarif.identifier ? (<button className='card__button card__button--submit material-symbols-outlined' onClick={() => submitTarif(tarif)}>check</button>) : ( <button className='card__button card__button--submit material-symbols-outlined' onClick={() => deleteTarif(tarif)}>delete</button> )}
+  </div>
+))}
 
-        {/* <div className='region__hours'>
+        {currentTarif && modalStatus && <div className='region__hours'>
           {hours.map((freeHour) =>
             <button className='hours__option' key={freeHour} onClick={() => selectRange(freeHour)}>{freeHour}</button>
           )}
-        </div> */}
+        </div>}
 
         { !currentTarif && <button className='region__text-button' type='button' onClick={() => createTarif()}>Tilføj tarrif</button> }
       </div>
