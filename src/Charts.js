@@ -94,11 +94,11 @@ function Charts() {
 
   function submitTarif () {
     toggleModal(false)
-    if (correctedNumber && correctedNumber.length > 0) {
+    if (  (currentHours && currentHours.length > 0) && (correctedNumber && correctedNumber.length > 0)) {
       setTarifs(prevTarifs => {
         const updatedTarifs = prevTarifs.map(tarif => {
           if (tarif.identifier === currentTarif.identifier) {
-            return { ...tarif, price: correctedNumber };
+            return { ...tarif, price: correctedNumber, hours: currentHours };
           }
           return tarif;
         });
@@ -126,8 +126,11 @@ function Charts() {
 
   function selectRange (hour) {
     if (currentHours[0]) {
-      console.log(hour)
-      setCurrentHours(Array(currentHours[0], hour))
+      if (hour > currentHours[0])
+        setCurrentHours(Array(currentHours[0], hour))
+      else {
+        setCurrentHours(Array(hour, currentHours[0]))
+      }
     }else {
       console.log(hour)
       setCurrentHours(Array(hour))
@@ -177,7 +180,7 @@ function Charts() {
 {tarifs.map((tarif) => (
   <div className={currentTarif && currentTarif.identifier === tarif.identifier ? 'region__card' : 'region__card region__card--closed'} key={tarif.identifier}>
     {currentTarif && currentTarif.identifier === tarif.identifier && (<button className='card__button card__button--close material-symbols-outlined' onClick={() => closeTarif(tarif)}>close</button>)}
-    { tarif.price ? ( <p className='card__title'>Tarrif på {tarif.price} kr</p> ) : (<p className='card__title'>Ukategoriseret tarif</p>)}
+    { tarif.price ? ( <p className='card__title'>{tarif.price} kr <br/> {tarif.hours[0]} - {tarif.hours[1]} </p> ) : (<p className='card__title'>Ukategoriseret tarif</p>)}
     {currentTarif && currentTarif.identifier === tarif.identifier && (<input className='card__price' type="text" placeholder='Pris i kr/øre' onChange={({ target: { value } }) => priceChange(value)} value={correctedNumber} /> )}
     {currentTarif && currentTarif.identifier === tarif.identifier && (
       <div>
