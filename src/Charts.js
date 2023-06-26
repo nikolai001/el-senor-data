@@ -25,7 +25,7 @@ function Charts() {
   const [correctedNumber, setCorrectedNumber] = useState('')
   const [hours, setHours] = useState(() => {
     const initialHours = [];
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < 24; i++) {
       const hour = String(i).padStart(2, '0') + ':00';
       initialHours.push(hour);
     }
@@ -105,12 +105,48 @@ function Charts() {
         const filteredTarifs = updatedTarifs.filter(tarif => tarif.identifier !== setCurrentTarif.setCurrentTarif || tarif === currentTarif);
         return filteredTarifs;
       });
+      removeUsedHours(currentHours)
       setCorrectedNumber()
       setCurrentTarif()
     }
   }
 
+  function removeUsedHours (currentHours) {
+    let removedHours = []
+    for (let hourIndex = parseInt(currentHours[0].substring(0,2)); hourIndex <= parseInt(currentHours[1].substring(0,2)); hourIndex++) {
+      removedHours.push(hourIndex);
+    }
+    setHours(hours.filter((hour) => !removedHours.includes(parseInt(hour.substring(0,2)))));
+  }
+
   function deleteTarif (tarif) {
+
+    let addedHours = []
+    for (let hourIndex = parseInt(tarif.hours[0].substring(0,2)); hourIndex <= parseInt(tarif.hours[1].substring(0,2)); hourIndex++) {
+      addedHours.push(hourIndex);
+    }
+
+    // if (hours.length === 0) {
+    //   console.log("Pushing");
+    //   setHours(addedHours.map(hour => (hour.includes(':') ? hour : hour + ':00')));
+    // } else if (parseInt(addedHours[addedHours.length - 1]) < parseInt(hours[0].substring(0, 2))) {
+    //   console.log("Prepending");
+    //   addedHours = addedHours.map( hour => hour.toString().length < 2 ? "0"+hour+":00" : hour.toString().includes(':') ? hour : hour + ':00')
+    //   setHours(addedHours.concat(hours));
+    // } else if (parseInt(addedHours[0]) > parseInt(hours[hours.length - 1].substring(0, 2))) {
+    //   console.log("Appending");
+    //   addedHours = addedHours.map( hour => hour.toString().length < 2 ? "0"+hour+":00" : hour.toString().includes(':') ? hour : hour + ':00')
+    //   setHours(hours.concat(addedHours));
+    // }
+    addedHours = addedHours.map( hour => hour.toString().length < 2 ? "0"+hour+":00" : hour.toString().includes(':') ? hour : hour + ':00')
+    let sortedHours = hours.concat(addedHours).sort((a, b) => {
+      const hourA = parseInt(a.substring(0, 2));
+      const hourB = parseInt(b.substring(0, 2));
+    
+      return hourA - hourB; ;
+    })
+    setHours(sortedHours);
+
     let updatedTarifs = tarifs.filter((element) => element.identifier !== tarif.identifier);
     setTarifs(updatedTarifs)
   }
@@ -132,39 +168,13 @@ function Charts() {
         setCurrentHours(Array(hour, currentHours[0]))
       }
     }else {
-      console.log(hour)
       setCurrentHours(Array(hour))
     }
   }
-
-  const updateTarif = (value, identifier) => {
-    if (tarifs.length !== 0) {
-      let updatedTarifs = tarifs.map((element) => {
-        if (element.identifier === identifier) {
-          return { ...element, value: value };
-        }
-        return element;
-      });
-  
-      let existingElement = updatedTarifs.find(
-        (element) => element.identifier === identifier
-      );
-  
-      if (!existingElement) {
-        updatedTarifs.push({ identifier: identifier, value: value });
-      }
-
-      setTarifs(updatedTarifs);
-    } else {
-      setTarifs([{ identifier, value }]);
-    }
-  };
-  
   
 
   return (
     <main className='chart'>
-      
       <div className='chart__date'>
         <label className='date__label' htmlFor="Date">Vælg dato</label>
         <input name="Date" className='date__input input' type="date" min={"2022-10-27"} max={maxDate()} value={localDate.toISOString().split('T')[0]} onChange={(e) => setLocalDate(new Date(e.target.value))}></input>
