@@ -126,18 +126,6 @@ function Charts() {
       addedHours.push(hourIndex);
     }
 
-    // if (hours.length === 0) {
-    //   console.log("Pushing");
-    //   setHours(addedHours.map(hour => (hour.includes(':') ? hour : hour + ':00')));
-    // } else if (parseInt(addedHours[addedHours.length - 1]) < parseInt(hours[0].substring(0, 2))) {
-    //   console.log("Prepending");
-    //   addedHours = addedHours.map( hour => hour.toString().length < 2 ? "0"+hour+":00" : hour.toString().includes(':') ? hour : hour + ':00')
-    //   setHours(addedHours.concat(hours));
-    // } else if (parseInt(addedHours[0]) > parseInt(hours[hours.length - 1].substring(0, 2))) {
-    //   console.log("Appending");
-    //   addedHours = addedHours.map( hour => hour.toString().length < 2 ? "0"+hour+":00" : hour.toString().includes(':') ? hour : hour + ':00')
-    //   setHours(hours.concat(addedHours));
-    // }
     addedHours = addedHours.map( hour => hour.toString().length < 2 ? "0"+hour+":00" : hour.toString().includes(':') ? hour : hour + ':00')
     let sortedHours = hours.concat(addedHours).sort((a, b) => {
       const hourA = parseInt(a.substring(0, 2));
@@ -145,6 +133,7 @@ function Charts() {
     
       return hourA - hourB; ;
     })
+
     setHours(sortedHours);
 
     let updatedTarifs = tarifs.filter((element) => element.identifier !== tarif.identifier);
