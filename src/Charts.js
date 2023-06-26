@@ -39,8 +39,19 @@ function Charts() {
         data.forEach(entry => entry.time_start = entry.time_start.substring(11,16))
         data.forEach(entry => entry.DKK_per_kWh = entry.DKK_per_kWh.toString().substring(0,5))
         setApiData(data)
-        const updatedData = data.map(item => ({ ...item }));
-        updatedData.forEach(price => price.DKK_per_kWh = price.DKK_per_kWh * 1.25);
+        const updatedData = data.slice().map(item => ({ ...item }));
+        updatedData.sort((a, b) => { const hourA = parseInt(a.time_start) ; const hourB = parseInt(b.time_start); return hourA - hourB; })
+
+        for (let i = 0; i < updatedData.length ; i++) {
+          tarifs.forEach( element => {
+            for (let usedHour = parseInt(element.hours[0].substring(0,2)); usedHour <= parseInt(element.hours[1].substring(0,2)); usedHour++) {
+              if (parseInt(updatedData[i].time_start.substring(0,2)) == usedHour || parseInt(updatedData[i].time_end.substring(0,2)) == usedHour) {
+                updatedData[i].DKK_per_kWh = (parseFloat(updatedData[i].DKK_per_kWh) + parseFloat(element.price))
+              }
+            }
+          })
+        }
+
         setVAT(updatedData);          
         setLoading(false);
       }
