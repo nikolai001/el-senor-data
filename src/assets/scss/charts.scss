@@ -5,9 +5,9 @@ body {
 }
 
 .input {
-  width: 50%;
+  width: 60%;
   text-align: center;
-  max-width: 180px;
+  max-width: 230px;
   padding: 10px 10px;
   outline: none;
   color: $green;
@@ -16,7 +16,7 @@ body {
   border-radius: 10px;
   box-shadow: $el-1;
   margin: 10px auto 30px auto;
-  box-sizing: content-box;
+  box-sizing: border-box;
 }
 
 .chart {
@@ -89,13 +89,13 @@ body {
     margin: 15px 0 0 0;
   }
 
-  .region__text-button {
+  &__text-button {
     background-color: transparent;
     border: none;
     outline: none;
     color: $green;
     text-decoration: underline;
-    margin: 0 10% 0 auto;
+    margin: 0 10% 20px auto;
     width: fit-content;
     cursor: pointer;
   }
@@ -124,7 +124,7 @@ body {
     }
   }
 
-  .region__card {
+  .chart__card {
     background-color: $background--light;
     box-shadow: $el-1;
     border-radius: 10px;
@@ -133,6 +133,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-width: 250px;
+    box-sizing: border-box;
     &--closed {
       padding: 24px 0 0 0;
     }
@@ -181,19 +183,19 @@ body {
       margin: 10px auto 50px auto;
     }
     .region__label {
-      color: $green;
       margin: 10px 0 0 0;
     }
     .date__label {
       margin: 10px 0 0 0;
-      color: $green;
     }
 
-    .region__picker {
-      width: 100%;
-      max-width: 180px;
-      padding: 10px 10px;
-      margin: 10px auto 50px auto;
+    &__card {
+      grid-column: 1/-1;
+    }
+    &__text-button {
+      margin: 0 10% 20px auto;
+      width: fit-content;
+      grid-column: 2/3;
     }
   }
 }
@@ -206,23 +208,21 @@ body {
       margin: 0;
     }
     .region__label {
-      color: $green;
       margin: 0;
       height: fit-content;
-      align-self: center;
+      margin: 18px 0;
     }
     .date__label {
       margin: 0;
-      color: $green;
       height: fit-content;
-      align-self: center;
+      margin: 18px 0;
     }
     .chart__region {
       flex-direction: row;
       justify-content: space-evenly;
       margin: 25px auto;
-      max-width: 400px;
       width: 70%;
+      max-width: 400px;
     }
 
     .chart__date {
@@ -231,10 +231,6 @@ body {
       margin: 25px auto;
       width: 70%;
       max-width: 400px;
-    }
-
-    .region__picker {
-      margin: 0;
     }
   }
 }

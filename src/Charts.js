@@ -187,9 +187,10 @@ function Charts() {
           <option className='picker__option' value="DK2">Østdanmark</option>
           <option className='picker__option' value="DK1">Vestdanmark</option>
         </select>
+      </div>
 
-{tarifs.map((tarif) => (
-  <div className={currentTarif && currentTarif.identifier === tarif.identifier ? 'region__card' : 'region__card region__card--closed'} key={tarif.identifier}>
+      {tarifs.map((tarif) => (
+  <div className={currentTarif && currentTarif.identifier === tarif.identifier ? 'chart__card' : 'chart__card chart__card--closed'} key={tarif.identifier}>
     {currentTarif && currentTarif.identifier === tarif.identifier && (<button className='card__button card__button--close material-symbols-outlined' onClick={() => closeTarif(tarif)}>close</button>)}
     { tarif.price ? ( <p className='card__title'>{tarif.price} kr <br/> {tarif.hours[0]} - {tarif.hours[1]} </p> ) : (<p className='card__title'>Ukategoriseret tarif</p>)}
     {currentTarif && currentTarif.identifier === tarif.identifier && (<input className='card__price' type="text" placeholder='Pris i kr/øre' onChange={({ target: { value } }) => priceChange(value)} value={correctedNumber} /> )}
@@ -216,8 +217,7 @@ function Charts() {
           )}
         </div>}
 
-        { !currentTarif && <button className='region__text-button' type='button' onClick={() => createTarif()}>Tilføj tarrif</button> }
-      </div>
+        { !currentTarif && <button className='chart__text-button' type='button' onClick={() => createTarif()}>Tilføj tarrif</button> }
 
       <article className='chart__table'>
           <div className='table__row'>
