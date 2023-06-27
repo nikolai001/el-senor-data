@@ -37,6 +37,7 @@ function Charts() {
         let data = await fetch(setApi(region,localDate));
         data = await data.json();
         data.forEach(entry => entry.time_start = entry.time_start.substring(11,16))
+        data.forEach(entry => entry.time_end = entry.time_end.substring(11,16))
         data.forEach(entry => entry.DKK_per_kWh = entry.DKK_per_kWh.toString().substring(0,5))
         setApiData(data)
         const updatedData = data.slice().map(item => ({ ...item }));
@@ -45,7 +46,10 @@ function Charts() {
         for (let i = 0; i < updatedData.length ; i++) {
           tarifs.forEach( element => {
             for (let usedHour = parseInt(element.hours[0].substring(0,2)); usedHour <= parseInt(element.hours[1].substring(0,2)); usedHour++) {
-              if (parseInt(updatedData[i].time_start.substring(0,2)) == usedHour || parseInt(updatedData[i].time_end.substring(0,2)) == usedHour) {
+              if (parseInt(updatedData[i].time_start.substring(0,2)) == usedHour) {
+                console.log(parseInt(updatedData[i].time_start), " Starting time")
+                console.log(parseInt(updatedData[i].time_end), " Ending time")
+                console.log("used hour ", parseInt(usedHour))
                 updatedData[i].DKK_per_kWh = (parseFloat(updatedData[i].DKK_per_kWh) + parseFloat(element.price))
               }
             }
