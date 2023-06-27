@@ -43,16 +43,18 @@ function Charts() {
         const updatedData = data.slice().map(item => ({ ...item }));
         updatedData.sort((a, b) => { const hourA = parseInt(a.time_start) ; const hourB = parseInt(b.time_start); return hourA - hourB; })
 
-        for (let i = 0; i < updatedData.length ; i++) {
-          tarifs.forEach( element => {
-            for (let usedHour = parseInt(element.hours[0].substring(0,2)); usedHour <= parseInt(element.hours[1].substring(0,2)); usedHour++) {
-              if (parseInt(updatedData[i].time_start.substring(0,2)) == usedHour) {
-                updatedData[i].DKK_per_kWh = (parseFloat(updatedData[i].DKK_per_kWh) + parseFloat(element.price))
+        if (VATPrices.length > 1) {
+          for (let i = 0; i < updatedData.length ; i++) {
+            updatedData[i].DKK_per_kWh = parseFloat((updatedData[i].DKK_per_kWh))
+            tarifs.forEach( element => {
+              for (let usedHour = parseInt(element.hours[0].substring(0,2)); usedHour <= parseInt(element.hours[1].substring(0,2)); usedHour++) {
+                if (parseInt(updatedData[i].time_start.substring(0,2)) == usedHour) {
+                  updatedData[i].DKK_per_kWh = parseFloat((parseFloat(updatedData[i].DKK_per_kWh) + parseFloat(element.price)*1.25))
+                }
               }
-            }
-          })
-        }
-
+            })
+          }
+        }  
         setVAT(updatedData);          
         setLoading(false);
       }
