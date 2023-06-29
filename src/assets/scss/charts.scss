@@ -25,6 +25,10 @@ body {
   display: flex;
   flex-direction: column;
   &__table {
+    .table__button-holder {
+      display: flex;
+      flex-direction: column;
+    }
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
@@ -140,9 +144,26 @@ body {
     &--closed {
       padding: 24px 0 0 0;
     }
+
+    .card__time {
+      background-color: $background--light;
+      color: $green;
+      border: none;
+      border-radius: 12px;
+      box-shadow: $el-1;
+      margin:15px auto 0 auto;
+      padding: 5px 15px;
+      cursor: pointer;
+      max-width: 150px;
+    }
+
     .card__price {
-      width: 30%;
+      width: 40%;
       outline: none;
+      border-radius: 24px;
+      border: none;
+      box-shadow: $el-1;
+      padding: 5px 10px;
       &--alt {
         color: $white;
         word-break: break-word;
@@ -177,6 +198,9 @@ body {
     grid-template-columns: 1fr 1fr;
     &__table {
       grid-column: 1/-1;
+      .table__button-holder {
+        flex-direction: row;
+      }
     }
     .date__picker {
       width: 100%;
@@ -205,12 +229,6 @@ body {
       margin: 5px auto 35px auto;
       grid-column: 1/-1;
       box-sizing: border-box;
-      // .hours__option {
-      //   background-color: $white;
-      //   border: none;
-      //   width: 30%;
-      //   max-width: 50px;
-      // }
     }
   }
 }

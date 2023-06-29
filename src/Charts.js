@@ -187,6 +187,14 @@ function Charts() {
       setCurrentHours(Array(hour))
     }
   }
+  
+  function copyToClipboard(state) {
+    const data = [];
+    console.log(document.querySelectorAll(".row__column--"+state))
+    document.querySelectorAll(".row__column--"+state).forEach(element => data.push(element.innerText));
+    const excelData = data.join("\n");
+    navigator.clipboard.writeText(excelData);
+  }
 
 
   return (
@@ -262,15 +270,15 @@ function Charts() {
               </p>
             </div>
 
-            <div className='row__column'>
+            <div className='row__column row__column--RAW'>
               {entry.DKK_per_kWh.charAt(0) === '0' ? (
-                <p>{(entry.DKK_per_kWh * 100).toFixed(2).replace('.', ',').concat(' Øre')}</p>
+                <p>{parseFloat((entry.DKK_per_kWh * 100)).toFixed(2).replace('.', ',').concat(' Øre')}</p>
               ) : (
-                <p>{(entry.DKK_per_kWh * 1).toFixed(2).replace('.', ',').concat(' Kr')}</p>
+                <p>{parseFloat((entry.DKK_per_kWh * 1)).toFixed(2).replace('.', ',').concat(' Kr')}</p>
               )}
             </div>
 
-            <div className='row__column'>
+            <div className='row__column row__column--VAT'>
               {VATPrices[index] && (
                 <p>
                   {VATPrices[index].DKK_per_kWh.toString().charAt(0) === '0' ? (
@@ -283,6 +291,10 @@ function Charts() {
             </div>
           </div>
         )}
+        <div className="table__button-holder">
+          <button className="button-holder__button--copy input" onClick={() => copyToClipboard("RAW")}>Kopier rå data</button>
+          <button className="button-holder__button--copy input" onClick={() => copyToClipboard("VAT")}>Kopier data med afgifter</button>
+        </div>
       </article>
     </main>
   );
