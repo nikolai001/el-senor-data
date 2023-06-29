@@ -1,5 +1,5 @@
-@import './colours','./elevations';
-  
+@import "./colours", "./elevations";
+
 body {
   background-color: $background--light;
 }
@@ -38,7 +38,6 @@ body {
       grid-template-columns: 1fr 1fr 1fr;
       .row__column {
         &--time {
-          
           .column--time__text {
             display: flex;
             .column--time-time {
@@ -100,7 +99,7 @@ body {
     cursor: pointer;
   }
 
-  .region__hours {
+  .chart__hours {
     width: 70%;
     display: flex;
     flex-wrap: wrap;
@@ -111,11 +110,14 @@ body {
     border-radius: 10px;
     padding: 15px 2%;
     .hours__option {
-      background-color: $white;
-      border: none;
+      background-color: $background--light;
+      color: $white;
+      border: 1px solid black;
+      margin:1px 1px;
       width: 30%;
+      aspect-ratio: 1/1;
       max-width: 50px;
-      &--selected { 
+      &--selected {
         background-color: $purple;
       }
       &:hover {
@@ -197,6 +199,19 @@ body {
       width: fit-content;
       grid-column: 2/3;
     }
+    .chart__hours {
+      width: 60%;
+      max-width: 350px;
+      margin: 5px auto 35px auto;
+      grid-column: 1/-1;
+      box-sizing: border-box;
+      // .hours__option {
+      //   background-color: $white;
+      //   border: none;
+      //   width: 30%;
+      //   max-width: 50px;
+      // }
+    }
   }
 }
 
@@ -231,6 +246,22 @@ body {
       margin: 25px auto;
       width: 70%;
       max-width: 400px;
+    }
+    .chart__card {
+      max-width: 350px;
+    }
+    .chart__hours {
+      width: 80%;
+      max-width: 400px;
+      margin: 5px auto 35px auto;
+      grid-column: 1/-1;
+      box-sizing: border-box;
+      // .hours__option {
+      //   background-color: $white;
+      //   border: none;
+      //   width: 30%;
+      //   max-width: 50px;
+      // }
     }
   }
 }
