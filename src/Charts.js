@@ -23,6 +23,7 @@ function Charts() {
   const [modalStatus, toggleModal] = useState(false)
   const [currentHours, setCurrentHours] = useState([])
   const [correctedNumber, setCorrectedNumber] = useState('')
+  const [snackbarToggled, setSnackbarToggled] = useState(false)
   const [hours, setHours] = useState(() => {
     const initialHours = [];
     for (let i = 0; i < 24; i++) {
@@ -190,11 +191,76 @@ function Charts() {
   
   function copyToClipboard(state) {
     const data = [];
-    console.log(document.querySelectorAll(".row__column--"+state))
     document.querySelectorAll(".row__column--"+state).forEach(element => data.push(element.innerText));
     const excelData = data.join("\n");
     navigator.clipboard.writeText(excelData);
+    setSnackbarToggled(true)
+    if (!snackbarToggled) {
+      setTimeout(() => {
+        setSnackbarToggled(false);
+      }, 2000);
+    }
   }
+
+
+  
+
+  function downloadData() {
+    let downloadLink;
+    let filename = localDate + '__' + region ? localDate + '__' + region + '.xls' : 'excel_data.xls';
+    let dataType = 'data:text/plain;charset=utf-16le';
+    let data = { 0: [], 1: [], 2: [] };
+    document.querySelectorAll(".row__column--RAW").forEach(element => data[0].push(element.innerText));
+    document.querySelectorAll(".row__column--VAT").forEach(element => data[1].push(element.innerText));
+    document.querySelectorAll(".column--time-time").forEach(element => data[2].push(element.innerText));
+  
+    // Generate the file content
+    let fileContent = '';
+    let maxLength = Math.max(data[0].length, data[1].length, data[2].length);
+    for (let i = 0; i < maxLength; i++) {
+      let row = `${data[2][i] || ''}\t${data[0][i] || ''}\t${data[1][i] || ''}\n`;
+      fileContent += row;
+    }
+  
+    // Add BOM (Byte Order Mark) to indicate UTF-16 encoding
+    let bom = new Uint8Array([0xFF, 0xFE]);
+    let encodedContent = new Uint16Array(fileContent.length + 1);
+    for (let i = 0; i < fileContent.length; i++) {
+      encodedContent[i] = fileContent.charCodeAt(i);
+    }
+    encodedContent[fileContent.length] = 0xFFFD; // Add replacement character at the end
+  
+    // Combine BOM and encoded content
+    let fileData = new Blob([bom, encodedContent], { type: dataType });
+  
+    // Create a URL for the Blob object
+    let downloadUrl = URL.createObjectURL(fileData);
+  
+    // Create a download link element
+    downloadLink = document.createElement('a');
+    document.body.appendChild(downloadLink);
+  
+    // Set the download link URL and file name
+    downloadLink.href = downloadUrl;
+    downloadLink.download = filename || 'excel_data.xls';
+  
+    // Trigger the download
+    downloadLink.click();
+    downloadLink.download = filename
+  
+    // Clean up the URL object
+    URL.revokeObjectURL(downloadUrl);
+  
+    if (!snackbarToggled) {
+      setTimeout(() => {
+        setSnackbarToggled(false);
+      }, 2000);
+    }
+  }
+  
+  
+  
+  
 
 
   return (
@@ -294,8 +360,12 @@ function Charts() {
         <div className="table__button-holder">
           <button className="button-holder__button--copy input" onClick={() => copyToClipboard("RAW")}>Kopier rå data</button>
           <button className="button-holder__button--copy input" onClick={() => copyToClipboard("VAT")}>Kopier data med afgifter</button>
+          <button className="button-holder__button--download input" onClick={() => downloadData()}>Download data som excel</button>
         </div>
       </article>
+      <div className={snackbarToggled ? 'chart__snackbar chart__snackbar--active': 'chart__snackbar'}>
+        <span className='snackbar__text'>Kopierede data</span> <span className='snackbar__icon material-symbols-outlined'>content_copy</span>
+      </div>
     </main>
   );
 }

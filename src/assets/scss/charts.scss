@@ -24,10 +24,38 @@ body {
   background-color: $background;
   display: flex;
   flex-direction: column;
+  &__snackbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    top: 85%;
+    color: $green--dark;
+    background-color: $white;
+    box-shadow: $el-1;
+    width: 40%;
+    max-width: 150px;
+    padding: 10px 25px;
+    border-radius: 12px;
+    transition: all .5s ease;
+    transform: translateX(-100vw);
+    display: flex;
+    min-width: 163px;
+    .snackbar__text {
+      transform: translateY(2.5px);
+      margin-right: 10%;
+    }
+    &--active {
+      transform: translateX(0px);
+    }
+  }
   &__table {
     .table__button-holder {
       display: flex;
       flex-direction: column;
+      .button-holder__button--copy {
+        cursor: pointer;
+      }
     }
     font-family: arial, sans-serif;
     border-collapse: collapse;
