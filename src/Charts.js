@@ -24,6 +24,7 @@ function Charts() {
   const [currentHours, setCurrentHours] = useState([])
   const [correctedNumber, setCorrectedNumber] = useState('')
   const [snackbarToggled, setSnackbarToggled] = useState(false)
+  const [snackbarMessage, setSnackbarMessage] = useState('')
   const [hours, setHours] = useState(() => {
     const initialHours = [];
     for (let i = 0; i < 24; i++) {
@@ -195,6 +196,7 @@ function Charts() {
     const excelData = data.join("\n");
     navigator.clipboard.writeText(excelData);
     setSnackbarToggled(true)
+    setSnackbarMessage('Kopierede data')
     if (!snackbarToggled) {
       setTimeout(() => {
         setSnackbarToggled(false);
@@ -250,7 +252,8 @@ function Charts() {
   
     // Clean up the URL object
     URL.revokeObjectURL(downloadUrl);
-  
+    setSnackbarMessage('Downloader dokument')
+    setSnackbarToggled(true);
     if (!snackbarToggled) {
       setTimeout(() => {
         setSnackbarToggled(false);
@@ -364,7 +367,7 @@ function Charts() {
         </div>
       </article>
       <div className={snackbarToggled ? 'chart__snackbar chart__snackbar--active': 'chart__snackbar'}>
-        <span className='snackbar__text'>Kopierede data</span> <span className='snackbar__icon material-symbols-outlined'>content_copy</span>
+        <span className='snackbar__text'>{snackbarMessage}</span> <span className='snackbar__icon material-symbols-outlined'>content_copy</span>
       </div>
     </main>
   );
