@@ -1,7 +1,22 @@
-@import './colours','./elevations';
-  
+@import "./colours", "./elevations";
+
 body {
   background-color: $background--light;
+}
+
+.input {
+  width: 60%;
+  text-align: center;
+  max-width: 230px;
+  padding: 10px 10px;
+  outline: none;
+  color: $green;
+  background-color: $background--light;
+  border: none;
+  border-radius: 10px;
+  box-shadow: $el-1;
+  margin: 10px auto 30px auto;
+  box-sizing: border-box;
 }
 
 .chart {
@@ -23,7 +38,6 @@ body {
       grid-template-columns: 1fr 1fr 1fr;
       .row__column {
         &--time {
-          
           .column--time__text {
             display: flex;
             .column--time-time {
@@ -46,7 +60,7 @@ body {
       }
 
       .row__head {
-        color: $green;
+        color: $white;
         padding: 0 0 15px 0;
       }
       &:nth-child(even) {
@@ -64,43 +78,96 @@ body {
     flex-direction: column;
   }
 
-  .date__picker {
-    width: 50%;
-    text-align: center;
-    max-width: 180px;
-    padding: 10px 10px;
-    outline: none;
-    color: $green;
-    background-color: $background--light;
-    border: none;
-    border-radius: 10px;
-    box-shadow: $el-1;
-    margin: 10px auto;
-  }
-
   .date__label {
     margin: 10px 0 0 0;
-    color: $green;
+    color: $white;
   }
 
   .region__label {
-    color: $green;
+    color: $white;
     margin: 15px 0 0 0;
   }
 
-  .region__picker {
-    width: 50%;
-    text-align: center;
-    max-width: 180px;
-    padding: 10px 10px;
+  &__text-button {
+    background-color: transparent;
+    border: none;
     outline: none;
     color: $green;
+    text-decoration: underline;
+    margin: 0 10% 20px auto;
+    width: fit-content;
+    cursor: pointer;
+  }
+
+  .chart__hours {
+    width: 70%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    justify-content: center;
     background-color: $background--light;
-    border: none;
-    border-radius: 10px;
     box-shadow: $el-1;
-    margin: 10px auto 30px auto;
-    box-sizing: content-box;
+    border-radius: 10px;
+    padding: 15px 2%;
+    .hours__option {
+      background-color: $background--light;
+      color: $white;
+      border: 1px solid black;
+      margin:1px 1px;
+      width: 30%;
+      aspect-ratio: 1/1;
+      max-width: 50px;
+      &--selected {
+        background-color: $purple;
+      }
+      &:hover {
+        background-color: $green--light;
+      }
+    }
+  }
+
+  .chart__card {
+    background-color: $background--light;
+    box-shadow: $el-1;
+    border-radius: 10px;
+    width: 60%;
+    margin: 15px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 250px;
+    box-sizing: border-box;
+    &--closed {
+      padding: 24px 0 0 0;
+    }
+    .card__price {
+      width: 30%;
+      outline: none;
+      &--alt {
+        color: $white;
+        word-break: break-word;
+      }
+    }
+    .card__button {
+      background-color: transparent;
+      outline: none;
+      border: none;
+      color: $green;
+      padding: 0;
+      display: block;
+      cursor: pointer;
+      &--close {
+        margin: 5px 5px 0 auto;
+      }
+      &--submit {
+        margin: 0 5px 5px auto;
+      }
+    }
+    .card__title {
+      color: $white;
+      margin: 5px 0;
+      word-break: break-word;
+    }
   }
 }
 
@@ -118,19 +185,32 @@ body {
       margin: 10px auto 50px auto;
     }
     .region__label {
-      color: $green;
       margin: 10px 0 0 0;
     }
     .date__label {
       margin: 10px 0 0 0;
-      color: $green;
     }
 
-    .region__picker {
-      width: 100%;
-      max-width: 180px;
-      padding: 10px 10px;
-      margin: 10px auto 50px auto;
+    &__card {
+      grid-column: 1/-1;
+    }
+    &__text-button {
+      margin: 0 10% 20px auto;
+      width: fit-content;
+      grid-column: 2/3;
+    }
+    .chart__hours {
+      width: 60%;
+      max-width: 350px;
+      margin: 5px auto 35px auto;
+      grid-column: 1/-1;
+      box-sizing: border-box;
+      // .hours__option {
+      //   background-color: $white;
+      //   border: none;
+      //   width: 30%;
+      //   max-width: 50px;
+      // }
     }
   }
 }
@@ -143,23 +223,21 @@ body {
       margin: 0;
     }
     .region__label {
-      color: $green;
       margin: 0;
       height: fit-content;
-      align-self: center;
+      margin: 18px 0;
     }
     .date__label {
       margin: 0;
-      color: $green;
       height: fit-content;
-      align-self: center;
+      margin: 18px 0;
     }
     .chart__region {
       flex-direction: row;
       justify-content: space-evenly;
       margin: 25px auto;
-      max-width: 400px;
       width: 70%;
+      max-width: 400px;
     }
 
     .chart__date {
@@ -169,9 +247,21 @@ body {
       width: 70%;
       max-width: 400px;
     }
-
-    .region__picker {
-      margin: 0;
+    .chart__card {
+      max-width: 350px;
+    }
+    .chart__hours {
+      width: 80%;
+      max-width: 400px;
+      margin: 5px auto 35px auto;
+      grid-column: 1/-1;
+      box-sizing: border-box;
+      // .hours__option {
+      //   background-color: $white;
+      //   border: none;
+      //   width: 30%;
+      //   max-width: 50px;
+      // }
     }
   }
 }
