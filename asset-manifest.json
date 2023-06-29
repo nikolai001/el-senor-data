@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/el-senor-data/static/css/main.e90ed84d.css",
-    "main.js": "/el-senor-data/static/js/main.574d7d7a.js",
+    "main.css": "/el-senor-data/static/css/main.18e67b2c.css",
+    "main.js": "/el-senor-data/static/js/main.a561bfa9.js",
     "index.html": "/el-senor-data/index.html",
-    "main.e90ed84d.css.map": "/el-senor-data/static/css/main.e90ed84d.css.map",
-    "main.574d7d7a.js.map": "/el-senor-data/static/js/main.574d7d7a.js.map"
+    "main.18e67b2c.css.map": "/el-senor-data/static/css/main.18e67b2c.css.map",
+    "main.a561bfa9.js.map": "/el-senor-data/static/js/main.a561bfa9.js.map"
   },
   "entrypoints": [
-    "static/css/main.e90ed84d.css",
-    "static/js/main.574d7d7a.js"
+    "static/css/main.18e67b2c.css",
+    "static/js/main.a561bfa9.js"
   ]
 }
