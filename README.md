@@ -1,70 +1,26 @@
-# Getting Started with Create React App
+# 🇬🇧
+## Using the Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is quite simple to use. Prices are automatically fetched for the current date to fetch prices from another date, simply select the desired date. It is important to note that due to API limitations, the available dates only extend as far back as November 1st, 2022.
 
-## Available Scripts
+Once the desired date has been fetched you can effortlessly add multiple tariffs. The system automatically applies a 25% increase to the electricity prices and tariffs, representing the Value Added Tax (VAT) applicable in Denmark.
 
-In the project directory, you can run:
+You have the option to copy the entire column containing the raw data, or the modified data column including the added tariffs and VAT. Alternatively, you can download the entire dataset as an Excel file.
 
-### `npm start`
+## About the Project
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The primary objective of this project was to help me learn of React. Additionally, it aimed to assist my father, who regularly manually logged electricity prices by looking at an app on his phone and entering the data into an Excel spreadsheet. By automating this process, I intended to provide him with significant time savings in his daily routine.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+# 🇩🇰
+## Brug af projektet
 
-### `npm test`
+Dette projekt er meget enkelt at bruge. Priserne bliver automatisk hentet for den aktuelle dato. For at hente priser fra en anden dato, skal du blot vælge den ønskede dato. 
+På grund af API-begrænsninger strækker de tilgængelige datoer sig kun tilbage til 1. november 2022.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Når den ønskede dato er blevet hentet, kan du nemt tilføje flere takster. Der tilføjes automatisk på 25% til elpriserne og taksterne, hvilket repræsenterer den gældende moms i Danmark.
 
-### `npm run build`
+Du har mulighed for at kopiere hele kolonnen med rådata eller kolonnen med ændrede data der inkludere tilføjede takster og moms. Alternativt kan du downloade hele datasættet som en Excel-fil.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Om projektet
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Det primære mål med dette projekt var at hjælpe mig med at lære React. Derudover havde det til formål at hjælpe min far, som regelmæssigt manuelt loggede elpriser ved at kigge på en app på sin telefon og indtaste dataene i en Excel-regneark. Ved at automatisere denne proces havde jeg til hensigt at give ham en lidt lettere daglig rutine når det kom til hans el-pris-logging.
